@@ -2,6 +2,9 @@ import './style.css'
 import batoiLogo from './public/logoBatoi.png'
 import * as funciones from './src/functions.js';
 import data from './src/services/datos.js';
+import Book from './book.class.js';
+import User from './user.class.js';
+import Module from './module.class.js';
 
 
 document.querySelector('#app').innerHTML = `

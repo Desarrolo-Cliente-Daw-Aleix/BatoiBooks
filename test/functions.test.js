@@ -11,6 +11,15 @@ describe('function getBookById', () => {
     const response = functions.getBookById(books, 1)
     expect(response.id).toBe(1)
   });
+
+
+
+
+
+
+
+
+  
   
   test('getBookById 22 devuelve un error', () => {
     expect(() => functions.getBookById(books, 22)).toThrowError()
