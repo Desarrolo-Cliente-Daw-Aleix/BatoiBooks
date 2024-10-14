@@ -1,30 +1,34 @@
 import Book from './book.class';
+import { getDBBooks, addDBBook, removeDBBook, changeDBBook } from '../services/api.js';
 
 export default class Books {
     constructor() {
         this.data = [];
     }
 
-    populate(bookArray) {
-        this.data = bookArray.map(bookData => new Book(bookData));
+    async populate() {
+        const booksArray = await getDBBooks();
+        this.data = booksArray.map(bookData => new Book(bookData));
     }
 
-    addBook(bookData) {
-        const newBook = new Book({ ...bookData, id: this.data.length + 1 });
-        this.data.push(newBook);
+    async addBook(bookData) {
+        const newBook = await addDBBook(bookData);
+        this.data.push(new Book(newBook));
         return newBook;
     }
 
-    removeBook(bookId) {
+    async removeBook(bookId) {
+        await removeDBBook(bookId);
         const index = this.data.findIndex(book => book.id === bookId);
         if (index === -1) throw new Error('No existe');
         this.data.splice(index, 1);
     }
 
-    changeBook(bookData) {
-        const index = this.data.findIndex(book => book.id === bookData.id);
+    async changeBook(bookData) {
+        const updatedBook = await changeDBBook(bookData);
+        const index = this.data.findIndex(book => book.id === updatedBook.id);
         if (index === -1) throw new Error('No existe');
-        this.data[index] = new Book(bookData);
+        this.data[index] = new Book(updatedBook);
     }
 
     getBookById(bookId) {

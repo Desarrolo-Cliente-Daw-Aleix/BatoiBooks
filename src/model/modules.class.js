@@ -1,12 +1,14 @@
 import Module from './module.class';
+import { getDBModules } from '../services/api.js';
 
 export default class Modules {
     constructor() {
         this.data = [];
     }
 
-    populate(moduleArray) {
-        this.data = moduleArray.map(moduleData => new Module(moduleData.code, moduleData.cliteral, moduleData.vliteral, moduleData.courseId));
+    async populate() {
+        const modulesArray = await getDBModules();
+        this.data = modulesArray.map(moduleData => new Module(moduleData.code, moduleData.cliteral, moduleData.vliteral, moduleData.courseId));
     }
 
     booksFromModule(moduleCode) {

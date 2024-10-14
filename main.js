@@ -1,24 +1,25 @@
-import './style.css'
-import batoiLogo from './public/logoBatoi.png'
-import * as funciones from './src/functions.js';
-import data from './src/services/datos.js';
-import Book from './book.class.js';
-import User from './user.class.js';
-import Module from './module.class.js';
+import Modules from './modules.class';
+import Users from './users.class';
+import Books from './books.class';
 
+(async () => {
+    const modules = new Modules();
+    const users = new Users();
+    const books = new Books();
 
-document.querySelector('#app').innerHTML = `
-  <div>
-      <img src="${batoiLogo}" class="logo" alt="Batoi logo" />
-    </a>
-    <p class="read-the-docs">
-      Abre la consola
-    </p>
-  </div>
-`
-console.log("Libros del usuario 4:", funciones.booksFromUser(data.books, 4));
+    await modules.populate();
+    await users.populate();
+    await books.populate();
 
-console.log("Libros del módulo 5021 en buen estado:", funciones.booksFromModule(funciones.booksWithStatus(data.books ,"good"), 5021));
+    const booksFromModule5021 = books.booksFromModule(5021);
+    console.log("Libros del módulo 5021:", booksFromModule5021);
 
-console.log("Libros con precios incrementados en un 10%:", funciones.incrementPriceOfbooks(data.books, 0.1));
+    const newBooks = books.booksWithStatus('new');
+    console.log("Libros en estado 'new':", newBooks);
 
+    const booksWithIncreasedPrice = books.data.map(book => ({
+        ...book,
+        price: parseFloat((book.price * 1.1).toFixed(2))
+    }));
+    console.log("Libros con precio incrementado en 10%:", booksWithIncreasedPrice);
+})();

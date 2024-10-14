@@ -1,31 +1,41 @@
 import User from './user.class';
+import { getDBUsers, addDBUser, removeDBUser, changeDBUser, changeDBUserPassword } from '../services/api.js';
 
 export default class Users {
     constructor() {
         this.data = [];
     }
 
-    populate(userArray) {
-        this.data = userArray.map(userData => new User(userData.id, userData.nick, userData.email, userData.password));
+    async populate() {
+        const usersArray = await getDBUsers();
+        this.data = usersArray.map(userData => new User(userData.id, userData.nick, userData.email, userData.password));
     }
 
-    addUser(userData) {
-        const newUser = new User(this.data.length + 1, userData.nick, userData.email, userData.password);
-        this.data.push(newUser);
+    async addUser(userData) {
+        const newUser = await addDBUser(userData);
+        this.data.push(new User(newUser.id, newUser.nick, newUser.email, newUser.password));
         return newUser;
     }
 
-    removeUser(userId) {
+    async removeUser(userId) {
+        await removeDBUser(userId);
         const index = this.data.findIndex(user => user.id === userId);
         if (index === -1) throw new Error('No existe');
         this.data.splice(index, 1);
     }
 
-    changeUser(userData) {
-        const index = this.data.findIndex(user => user.id === userData.id);
+    async changeUser(userData) {
+        const updatedUser = await changeDBUser(userData);
+        const index = this.data.findIndex(user => user.id === updatedUser.id);
         if (index === -1) throw new Error('No existe');
-        this.data[index] = new User(userData.id, userData.nick, userData.email, userData.password);
+        this.data[index] = new User(updatedUser.id, updatedUser.nick, updatedUser.email, updatedUser.password);
     }
+
+    async changeUserPassword(userId, newPassword) {
+        const updatedUser = await changeDBUserPassword(userId, newPassword);
+        const index = this.data.findIndex(user => user.id === userId);
+        if (index === -1) throw new Error('No existe');
+    }   
 
     getUserById(userId) {
         const user = this.data.find(user => user.id === userId);
