@@ -7,21 +7,37 @@ export default class Books {
     }
 
     async populate() {
-        const booksArray = await getDBBooks();
-        this.data = booksArray.map(bookData => new Book(bookData));
+        try {
+            const booksArray = await getDBBooks();
+            this.data = booksArray.map(bookData => new Book(bookData));
+        } catch (error) {
+            throw new Error('Error al cargar los libros:', error);
+        }
     }
 
-    async addBook(bookData) {
-        const newBook = await addDBBook(bookData);
-        this.data.push(new Book(newBook));
-        return newBook;
+    async addBook(newBookData) {
+        try {
+            const addedBook = await addDBBook(newBookData);
+            const newBook = new Book(addedBook);
+            this.data.push(newBook);
+            return newBook;  // Devolver el nuevo libro para la vista
+        } catch (error) {
+            console.error('Error al añadir el libro:', error);
+            throw error;
+        }
     }
 
     async removeBook(bookId) {
-        await removeDBBook(bookId);
-        const index = this.data.findIndex(book => book.id === bookId);
-        if (index === -1) throw new Error('No existe');
-        this.data.splice(index, 1);
+        try {
+            await removeDBBook(bookId);
+            const index = this.data.findIndex(book => book.id === bookId);
+            if (index === -1) throw new Error('No existe el libro');
+            const removedBook = this.data.splice(index, 1)[0];
+            return removedBook;  // Devolver el libro eliminado para la vista
+        } catch (error) {
+            console.error('Error al eliminar el libro:', error);
+            throw error;
+        }
     }
 
     async changeBook(bookData) {
