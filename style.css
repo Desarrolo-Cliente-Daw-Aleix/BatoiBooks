@@ -4,20 +4,28 @@ body {
   padding: 0;
   background-color: #505050;
   color: #fff;
-}
-
-header {
-  text-align: center;
-  padding: 20px 0;
-}
-nav{
-  text-align: center;
-  
-}
-#main {
   text-align: center;
 }
 
-footer{
-  text-align: center;
+#list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2em;
+}
+
+.card {
+  border-radius:8px;
+  background-color: lightpink;
+}
+
+.error {
+  color: #ff0033;
+}
+
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: ;
 }

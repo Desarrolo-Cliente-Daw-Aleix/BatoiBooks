@@ -20,7 +20,7 @@ const getDBUser = async (id) => {
 };
 
 const addDBUser = async (newUser) => {
-    try {
+    try {   
         const response = await fetch(`${API_URL}/users`, {
             method: 'POST',
             headers: {
