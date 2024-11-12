@@ -33,7 +33,7 @@ document.querySelector('#app').innerHTML = `
 
         <div>
           <label for="publisher">Editorial:</label>
-          <input type="text" id="publisher" required><br>
+          <input type="text" id="publisher"><br>
         </div>
 
         <div>
@@ -49,7 +49,7 @@ document.querySelector('#app').innerHTML = `
         <div>
           <label>Estado:</label>
 
-          <input type="radio" name="status" value="new" required>Nuevo
+          <input type="radio" name="status" value="new">Nuevo
           <input type="radio" name="status" value="good">Bueno
           <input type="radio" name="status" value="used">Usado
           <input type="radio" name="status" value="bad">Malo
