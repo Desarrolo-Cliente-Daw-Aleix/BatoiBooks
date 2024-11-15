@@ -74,48 +74,55 @@ export default class View {
     setBookSubmitHandler(callback) {
         this.bookForm.addEventListener('submit', (event) => {
             event.preventDefault();
-    
+
             const moduleCode = document.getElementById('id-module').value;
             const publisher = document.getElementById('publisher').value;
             const price = document.getElementById('price').value;
             const pages = document.getElementById('pages').value;
             const status = document.querySelector('input[name="status"]:checked')?.value;
+
+            /*fieldIds.forEach((fieldId) => {
+                const field = document.getElementById("id-module");
+                const spanError = field.closest("div").querySelector("span.error");
+                spanError.textContent = field.validationMessage;*/
             
+
+
             let isValid = true;
             let errorMessage = "";
-    
+     
             if (!moduleCode) {
                 isValid = false;
                 errorMessage += "El módulo es obligatorio.\n";
             }
-    
+     
             if (!publisher) {
                 isValid = false;
                 errorMessage += "El editor es obligatorio.\n";
             }
-    
+     
             const priceValue = parseFloat(price);
             if (isNaN(priceValue) || priceValue < 0) {
                 isValid = false;
                 errorMessage += "El precio debe ser un número mayor o igual a 0 y puede incluir céntimos.\n";
             }
-    
+     
             const pagesValue = parseInt(pages, 10);
             if (isNaN(pagesValue) || pagesValue < 0) {
                 isValid = false;
                 errorMessage += "Las páginas deben ser un número entero mayor o igual a 0.\n";
             }
-    
+     
             if (!status) {
                 isValid = false;
                 errorMessage += "El estado es obligatorio.\n";
             }
-    
+     
             if (!isValid) {
                 this.renderMessage("error", errorMessage.trim());
                 return;
             }
-    
+
             callback({
                 moduleCode,
                 publisher,
@@ -125,8 +132,8 @@ export default class View {
             });
         });
     }
-    
-    
+
+
 
     setBookRemoveHandler(callback) {
         this.remove.addEventListener('click', () => {
